@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>War Tiket Badminton</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #2563eb;
+        --warning: #f59e0b;
+        --error: #dc2626;
+        --success: #16a34a;
+        --bg: #f8fafc;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .card {
+        background: white;
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+      h1 {
+        margin: 0 0 10px 0;
+        font-size: 1.5rem;
+        color: #1e293b;
+      }
+
+      .alert-box {
+        background-color: #fffbeb;
+        border: 1px solid #fcd34d;
+        color: #92400e;
+        padding: 10px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        line-height: 1.4;
+        font-weight: 600;
+      }
+
+      .quota-display {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #334155;
+        margin-bottom: 5px;
+      }
+      .quota-number {
+        color: var(--primary);
+        font-size: 1.5rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        box-sizing: border-box;
+        transition: 0.3s;
+      }
+      input:focus {
+        border-color: var(--primary);
+        outline: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .btn-main {
+        background-color: var(--primary);
+      }
+      .btn-main:hover {
+        background-color: #1d4ed8;
+      }
+      .btn-wl {
+        background-color: var(--warning);
+        color: #78350f;
+      }
+      .btn-wl:hover {
+        background-color: #d97706;
+      }
+      button:disabled {
+        background-color: #cbd5e1;
+        cursor: not-allowed;
+        color: #64748b;
+      }
+
+      #status {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+      .text-error {
+        color: var(--error);
+      }
+      .text-success {
+        color: var(--success);
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img
+        src="img/logo-removebg-preview - Copy.png"
+        alt="Logo"
+        style="height: 100px"
+      />
+      <h1>WAR TIKET Suka Nepak</h1>
+
+      <div id="loadingCheck">Sedang memuat data...</div>
+
+      <div id="quotaSection" class="hidden">
+        <div class="quota-display">
+          Sisa Slot: <span id="slotNumber" class="quota-number">-</span>
+        </div>
+        <div class="alert-box">
+          ⚠ Jika Slot Sudah Kosong, Maka Anda Akan Otomatis Masuk Waiting
+          List!!!
+        </div>
+      </div>
+
+      <div id="formSection">
+        <input
+          type="text"
+          id="nama"
+          placeholder="Masukkan Nama Kamu"
+          autocomplete="off"
+        />
+        <button id="btnSubmit" class="btn-main" onclick="submitData()">
+          AMANKAN SLOT!
+        </button>
+      </div>
+
+      <div id="status"></div>
+    </div>
+
+    <script>
+      // ================= KONFIGURASI =================
+      const API_BASE_URL = "https://sheetdb.io/api/v1/206hglk100tbu"; // GANTI API ANDA
+      // ===============================================
+
+      // 1. FUNGSI LOGIKA OTOMATIS (AUTO-SCHEDULE)
+      function getAutoSchedule() {
+        const now = new Date();
+        const day = now.getDay(); // 0=Minggu, 1=Senin, ... 6=Sabtu
+        let targetDate = new Date(now);
+        let sesiName = "";
+
+        // Aturan Jadwal:
+        // Senin(1) - Kamis(4) --> Target Kamis
+        // Jumat(5) - Sabtu(6) --> Target Sabtu
+        // Minggu(0)           --> Target Kamis Depan
+
+        if (day >= 1 && day <= 4) {
+          // Target ke hari Kamis (4)
+          const selisih = 4 - day;
+          targetDate.setDate(now.getDate() + selisih);
+          sesiName = "kamis";
+        } else if (day === 4 || day === 6) {
+          // Target ke hari Sabtu (6)
+          const selisih = 6 - day;
+          targetDate.setDate(now.getDate() + selisih);
+          sesiName = "sabtu";
+        } else {
+          // Hari Minggu (0), target Kamis depan (+4 hari)
+          targetDate.setDate(now.getDate() + 4);
+          sesiName = "kamis";
+        }
+
+        // Buat Kode Unik berdasarkan Tanggal (Format: DDMMYYYY)
+        // Contoh: KAMIS-25122025
+        const tgl = targetDate.getDate().toString().padStart(2, "0");
+        const bln = (targetDate.getMonth() + 1).toString().padStart(2, "0");
+        const thn = targetDate.getFullYear();
+        const autoKode = `${sesiName.toUpperCase()}-${tgl}${bln}${thn}`;
+
+        return {
+          sesi: sesiName,
+          kode: autoKode,
+          dateReadable: `${tgl}/${bln}/${thn}`,
+        };
+      }
+
+      // 2. INISIALISASI VARIABEL
+      const urlParams = new URLSearchParams(window.location.search);
+      let sesiParam = urlParams.get("sesi");
+      let kodeParam = urlParams.get("kode");
+      let displayTanggal = "";
+
+      // JIKA LINK POLOS (Tidak ada parameter), GUNAKAN AUTO-SCHEDULE
+      if (!sesiParam || !kodeParam) {
+        console.log("Link polos dideteksi, menjalankan Auto-Schedule...");
+        const auto = getAutoSchedule();
+        sesiParam = auto.sesi;
+        kodeParam = auto.kode;
+        displayTanggal = auto.dateReadable;
+
+        // Opsional: Ubah URL di browser biar user tau (tanpa reload)
+        const newUrl = `${window.location.pathname}?sesi=${sesiParam}&kode=${kodeParam}`;
+        window.history.replaceState(null, "", newUrl);
+      }
+
+      // Variabel Global
+      let maxQuota = 0;
+      let targetSheet = "";
+      let currentTotal = 0;
+
+      // 3. VALIDASI SESI
+      if (sesiParam === "kamis") {
+        maxQuota = 12;
+        targetSheet = "Kamis";
+      } else if (sesiParam === "sabtu") {
+        maxQuota = 26;
+        targetSheet = "Sabtu";
+      } else {
+        document.getElementById("formSection").innerHTML =
+          '<p class="text-error">Error: Sesi tidak dikenali.</p>';
+        document.getElementById("loadingCheck").style.display = "none";
+      }
+
+      const BASE_ENDPOINT = `${API_BASE_URL}?sheet=${targetSheet}`;
+
+      // Helper text cleaner
+      function cleanText(str) {
+        return str ? str.toString().trim().toLowerCase() : "";
+      }
+
+      // 4. FUNGSI UTAMA (INIT)
+      async function init() {
+        if (!maxQuota) return;
+
+        // Update Judul di Halaman agar user tau ini jadwal tanggal berapa
+        const titleInfo = displayTanggal ? ` (${displayTanggal})` : "";
+        document.querySelector(
+          "h1"
+        ).innerHTML = `🏸 WAR TIKET <span style="font-size:0.6em; display:block; color:#666">${targetSheet.toUpperCase()}${titleInfo}</span>`;
+
+        try {
+          const uniq = new Date().getTime();
+          const fetchUrl = `${BASE_ENDPOINT}&uniq=${uniq}`;
+          const response = await fetch(fetchUrl);
+          const data = await response.json();
+
+          const targetKode = cleanText(kodeParam);
+          const validData = data.filter(
+            (item) => cleanText(item.sesi_kode) === targetKode
+          );
+
+          currentTotal = validData.length;
+          const sisa = Math.max(0, maxQuota - currentTotal);
+
+          document.getElementById("loadingCheck").classList.add("hidden");
+          document.getElementById("quotaSection").classList.remove("hidden");
+          document.getElementById("slotNumber").innerText = sisa;
+
+          updateButtonState();
+
+          // Debugging Info (Bisa dihapus nanti)
+          console.log("Auto Kode:", kodeParam);
+        } catch (error) {
+          console.error(error);
+          document.getElementById("status").innerHTML = "Gagal koneksi server.";
+        }
+      }
+
+      function updateButtonState() {
+        const btn = document.getElementById("btnSubmit");
+        if (currentTotal >= maxQuota) {
+          btn.className = "btn-wl";
+          btn.innerText = "ANTRI WAITING LIST";
+        } else {
+          btn.className = "btn-main";
+          btn.innerText = "AMANKAN SLOT!";
+        }
+      }
+
+      if (maxQuota) init();
+
+      // 5. FUNGSI SUBMIT
+      async function submitData() {
+        const nama = document.getElementById("nama").value;
+        const btn = document.getElementById("btnSubmit");
+        const status = document.getElementById("status");
+
+        if (!nama) {
+          alert("Isi nama dulu!");
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "Sedang Menyimpan...";
+        status.innerHTML = "";
+
+        try {
+          const uniq = new Date().getTime();
+          const checkRes = await fetch(`${BASE_ENDPOINT}&uniq=${uniq}`);
+          const checkData = await checkRes.json();
+
+          const targetKode = cleanText(kodeParam);
+          const realtimeCount = checkData.filter(
+            (item) => cleanText(item.sesi_kode) === targetKode
+          ).length;
+
+          let isWL = false;
+          let urutanWL = 0;
+          let pesan = "";
+
+          if (realtimeCount >= maxQuota) {
+            isWL = true;
+            urutanWL = realtimeCount - maxQuota + 1;
+            pesan = `Yah telat! Masuk <b>Waiting List ke-${urutanWL}</b>.`;
+          } else {
+            pesan = `<b>BERHASIL!</b> Slot diamankan.`;
+          }
+
+          const now = new Date();
+          const payload = {
+            data: {
+              ID: "INCREMENT",
+              Tanggal: now.toLocaleDateString("id-ID"),
+              Timestamp: now.toLocaleTimeString("id-ID"),
+              Nama: nama,
+              Sesi_Kode: kodeParam,
+            },
+          };
+
+          const postRes = await fetch(BASE_ENDPOINT, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const result = await postRes.json();
+
+          if (result.created) {
+            status.innerHTML = `<span class='${
+              isWL ? "text-wl" : "text-success"
+            }'>${pesan}</span>`;
+            document.getElementById("nama").disabled = true;
+            btn.classList.add("hidden");
+
+            if (!isWL) {
+              document.getElementById("slotNumber").innerText =
+                maxQuota - (realtimeCount + 1);
+            } else {
+              document.getElementById("slotNumber").innerText = "0";
+            }
+          } else {
+            throw new Error("Gagal respon server");
+          }
+        } catch (error) {
+          status.innerHTML =
+            "<span class='text-error'>Error: " + error.message + "</span>";
+          btn.disabled = false;
+          updateButtonState();
+        }
+      }
+    </script>
+  </body>
+</html>
