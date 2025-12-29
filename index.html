@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>War Tiket Badminton</title>
     <link
+      rel="icon"
+      type="image/x-icon"
+      href="img/logo-removebg-preview - Copy.png"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
       rel="stylesheet"
     />
@@ -171,41 +176,47 @@
       // 1. FUNGSI LOGIKA OTOMATIS (AUTO-SCHEDULE)
       function getAutoSchedule() {
         const now = new Date();
-        const day = now.getDay(); // 0=Minggu, 1=Senin, ... 6=Sabtu
+        const day = now.getDay();
         let targetDate = new Date(now);
         let sesiName = "";
 
-        // Aturan Jadwal:
-        // Senin(1) - Kamis(4) --> Target Kamis
-        // Jumat(5) - Sabtu(6) --> Target Sabtu
-        // Minggu(0)           --> Target Kamis Depan
-
+        // --- PERBAIKAN LOGIKA HARI DI SINI ---
         if (day >= 1 && day <= 4) {
-          // Target ke hari Kamis (4)
+          // Senin(1) s/d Kamis(4) --> Target Kamis
           const selisih = 4 - day;
           targetDate.setDate(now.getDate() + selisih);
           sesiName = "kamis";
-        } else if (day === 4 || day === 6) {
-          // Target ke hari Sabtu (6)
+        } else if (day === 5 || day === 6) {
+          // Jumat(5) & Sabtu(6) --> Target Sabtu
+          // (Kode lama Anda salah karena tidak ada angka 5)
           const selisih = 6 - day;
           targetDate.setDate(now.getDate() + selisih);
           sesiName = "sabtu";
         } else {
-          // Hari Minggu (0), target Kamis depan (+4 hari)
+          // Minggu(0) --> Target Kamis Depan
           targetDate.setDate(now.getDate() + 4);
           sesiName = "kamis";
         }
 
-        // Buat Kode Unik berdasarkan Tanggal (Format: DDMMYYYY)
-        // Contoh: KAMIS-25122025
         const tgl = targetDate.getDate().toString().padStart(2, "0");
         const bln = (targetDate.getMonth() + 1).toString().padStart(2, "0");
         const thn = targetDate.getFullYear();
-        const autoKode = `${sesiName.toUpperCase()}-${tgl}${bln}${thn}`;
+
+        // GENERATOR KODE ACAK TAPI KONSISTEN
+        // Agar kode tidak berupa tanggal polos, tapi karakter unik
+        const dateNum = parseInt(`${thn}${bln}${tgl}`);
+        const saltMath = 13579;
+        const randomLook = (dateNum * saltMath)
+          .toString(36)
+          .toUpperCase()
+          .slice(-6);
+
+        // Hasil: KAMIS-7X92BQ
+        const autoKode = `${sesiName.toUpperCase()}-${randomLook}`;
 
         return {
           sesi: sesiName,
-          kode: autoKode,
+          generatedKode: autoKode, // Pastikan nama variabel ini konsisten
           dateReadable: `${tgl}/${bln}/${thn}`,
         };
       }
@@ -213,7 +224,7 @@
       // 2. INISIALISASI VARIABEL
       const urlParams = new URLSearchParams(window.location.search);
       let sesiParam = urlParams.get("sesi");
-      let kodeParam = urlParams.get("kode");
+      let kodeParam = urlParams.get("generatedKode");
       let displayTanggal = "";
 
       // JIKA LINK POLOS (Tidak ada parameter), GUNAKAN AUTO-SCHEDULE
@@ -221,7 +232,7 @@
         console.log("Link polos dideteksi, menjalankan Auto-Schedule...");
         const auto = getAutoSchedule();
         sesiParam = auto.sesi;
-        kodeParam = auto.kode;
+        kodeParam = auto.generatedKode;
         displayTanggal = auto.dateReadable;
 
         // Opsional: Ubah URL di browser biar user tau (tanpa reload)
@@ -250,15 +261,16 @@
       const BASE_ENDPOINT = `${API_BASE_URL}?sheet=${targetSheet}`;
 
       // Helper text cleaner
+      // Helper: Membersihkan teks agar pencocokan akurat (Anti Spasi & Huruf Besar/Kecil)
       function cleanText(str) {
-        return str ? str.toString().trim().toLowerCase() : "";
+        return str ? str.toString().trim().toUpperCase() : "";
       }
 
-      // 4. FUNGSI UTAMA (INIT)
+      // 4. FUNGSI LOAD DATA (INIT)
       async function init() {
         if (!maxQuota) return;
 
-        // Update Judul di Halaman agar user tau ini jadwal tanggal berapa
+        // Update Judul
         const titleInfo = displayTanggal ? ` (${displayTanggal})` : "";
         document.querySelector(
           "h1"
@@ -271,8 +283,11 @@
           const data = await response.json();
 
           const targetKode = cleanText(kodeParam);
+
+          // --- PERBAIKAN DI SINI ---
+          // Kita cek item.Sesi_Kode (sesuai payload) ATAU item.sesi_kode (jaga-jaga)
           const validData = data.filter(
-            (item) => cleanText(item.sesi_kode) === targetKode
+            (item) => cleanText(item.Sesi_Kode || item.sesi_kode) === targetKode
           );
 
           currentTotal = validData.length;
@@ -284,8 +299,14 @@
 
           updateButtonState();
 
-          // Debugging Info (Bisa dihapus nanti)
-          console.log("Auto Kode:", kodeParam);
+          console.log(
+            "Kode:",
+            targetKode,
+            "| Terisi:",
+            currentTotal,
+            "| Sisa:",
+            sisa
+          );
         } catch (error) {
           console.error(error);
           document.getElementById("status").innerHTML = "Gagal koneksi server.";
@@ -321,13 +342,16 @@
         status.innerHTML = "";
 
         try {
+          // Double Check Kuota Real-time
           const uniq = new Date().getTime();
           const checkRes = await fetch(`${BASE_ENDPOINT}&uniq=${uniq}`);
           const checkData = await checkRes.json();
 
           const targetKode = cleanText(kodeParam);
+
+          // --- PERBAIKAN DI SINI JUGA ---
           const realtimeCount = checkData.filter(
-            (item) => cleanText(item.sesi_kode) === targetKode
+            (item) => cleanText(item.Sesi_Kode || item.sesi_kode) === targetKode
           ).length;
 
           let isWL = false;
@@ -343,13 +367,14 @@
           }
 
           const now = new Date();
+          // Payload dikirim dengan huruf Besar Awal (PascalCase)
           const payload = {
             data: {
               ID: "INCREMENT",
               Tanggal: now.toLocaleDateString("id-ID"),
               Timestamp: now.toLocaleTimeString("id-ID"),
               Nama: nama,
-              Sesi_Kode: kodeParam,
+              Sesi_Kode: kodeParam, // Pastikan ini sama dengan filter di atas
             },
           };
 
@@ -371,6 +396,7 @@
             document.getElementById("nama").disabled = true;
             btn.classList.add("hidden");
 
+            // Update UI Sisa Slot secara lokal agar instan
             if (!isWL) {
               document.getElementById("slotNumber").innerText =
                 maxQuota - (realtimeCount + 1);
