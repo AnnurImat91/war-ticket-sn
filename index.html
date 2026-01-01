@@ -176,39 +176,25 @@
       // 1. FUNGSI LOGIKA OTOMATIS (AUTO-SCHEDULE)
       function getAutoSchedule() {
         const now = new Date();
-        const day = now.getDay(); // 0=Minggu, 1=Senin...
-        const hour = now.getHours(); // Ambil Jam (0-23)
-
+        const day = now.getDay();
         let targetDate = new Date(now);
         let sesiName = "";
 
-        // --- LOGIKA HARI & JAM ---
-
+        // --- PERBAIKAN LOGIKA HARI DI SINI ---
         if (day >= 1 && day <= 3) {
-          // Senin(1) s/d Rabu(3) --> Target Kamis Minggu Ini
-          const selisih = 4 - day;
+          // Senin(1) s/d Kamis(4) --> Target Kamis
+          const selisih = 3 - day;
           targetDate.setDate(now.getDate() + selisih);
           sesiName = "kamis";
-        } else if (day === 4) {
-          // KHUSUS HARI KAMIS
-          // Jika sudah jam 18.00 ke atas, pindah ke Sabtu
-          if (hour >= 18) {
-            targetDate.setDate(now.getDate() + 2); // Kamis ke Sabtu (+2 hari)
-            sesiName = "sabtu";
-          } else {
-            // Jika belum jam 18.00 (masih jam 00.00 - 17.59) --> Tetap Kamis
-            targetDate.setDate(now.getDate());
-            sesiName = "kamis";
-          }
-        } else if (day === 5 || day === 6) {
+        } else if (day === 4 || day === 6) {
           // Jumat(5) & Sabtu(6) --> Target Sabtu
-          // (Note: Saya perbaiki bug kode lama Anda yang tidak menyertakan Jumat)
+          // (Kode lama Anda salah karena tidak ada angka 5)
           const selisih = 6 - day;
           targetDate.setDate(now.getDate() + selisih);
           sesiName = "sabtu";
         } else {
           // Minggu(0) --> Target Kamis Depan
-          targetDate.setDate(now.getDate() + 4);
+          targetDate.setDate(now.getDate() + 3);
           sesiName = "kamis";
         }
 
@@ -217,6 +203,7 @@
         const thn = targetDate.getFullYear();
 
         // GENERATOR KODE ACAK TAPI KONSISTEN
+        // Agar kode tidak berupa tanggal polos, tapi karakter unik
         const dateNum = parseInt(`${thn}${bln}${tgl}`);
         const saltMath = 13579;
         const randomLook = (dateNum * saltMath)
@@ -229,7 +216,7 @@
 
         return {
           sesi: sesiName,
-          generatedKode: autoKode,
+          generatedKode: autoKode, // Pastikan nama variabel ini konsisten
           dateReadable: `${tgl}/${bln}/${thn}`,
         };
       }
@@ -347,17 +334,6 @@
 
         if (!nama) {
           alert("Isi nama dulu!");
-          return;
-        }
-
-        const checkDate = new Date();
-        // Jika Hari Kamis (4) DAN Jam sudah lewat 17 (>= 17.00) DAN Sesi yg dibuka adalah Kamis
-        if (
-          checkDate.getDay() === 4 &&
-          checkDate.getHours() >= 17 &&
-          activeSesi === "kamis"
-        ) {
-          alert("Pendaftaran sesi Kamis sudah ditutup (Maksimal jam 17.00)!");
           return;
         }
 
