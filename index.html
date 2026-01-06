@@ -3,39 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>War Tiket Badminton - Edisi Tahun Baru</title>
+    <title>War Tiket Badminton SUka Nepak</title>
     <link
       rel="icon"
       type="image/x-icon"
       href="img/logo-removebg-preview - Copy.png"
     />
-    <!-- Font New Year Style: Cinzel (Elegant/Festive) & Montserrat (Modern) -->
+    <!-- Font New Year: Cinzel (Mewah) & Montserrat (Modern) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
       :root {
-        /* Palet Warna New Year */
-        --ny-gold: #d4af37;          /* Metallic Gold */
-        --ny-gold-light: #f7e7ce;    /* Champagne */
-        --ny-dark: #0f172a;          /* Midnight Blue/Black */
-        --ny-black: #000000;
-        --ny-accent: #ff4d4d;        /* Firework Red */
-        --glass-bg: rgba(20, 20, 30, 0.85);
+        /* Palet Warna Tahun Baru */
+        --ny-gold: #FFD700;
+        --ny-gold-dark: #B8860B;
+        --ny-silver: #C0C0C0;
+        --ny-black: #0a0a0a;
+        --ny-night: #1a1a2e;
+        --ny-glass: rgba(20, 20, 35, 0.85);
         
-        --glow-gold: 0 0 15px rgba(212, 175, 55, 0.5);
+        --text-main: #f3f4f6;
+        --text-gold: #F4E7BE;
+        
+        /* Status Colors (Neon Style) */
+        --success-glow: #00ff88;
+        --error-glow: #ff0055;
+        --wl-glow: #ffcc00;
       }
 
       body {
         font-family: 'Montserrat', sans-serif;
         background-color: var(--ny-black);
-        /* Background Fireworks Gradient sederhana */
+        /* Background Fireworks Abstract */
         background-image: 
-          radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 20%),
-          radial-gradient(circle at 80% 10%, rgba(255, 77, 77, 0.15) 0%, transparent 20%),
-          radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.1) 0%, transparent 30%);
-        background-attachment: fixed;
+          radial-gradient(circle at 15% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 25%),
+          radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.1) 0%, transparent 25%);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -43,144 +47,114 @@
         margin: 0;
         padding: 20px;
         box-sizing: border-box;
-        color: var(--ny-gold-light);
+        color: var(--text-main);
         overflow-x: hidden;
       }
 
-      /* Animasi 'Sparkle' Background */
+      /* Animasi Partikel Emas */
       @keyframes twinkle {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.2); }
+        0%, 100% { opacity: 0.2; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.5); }
       }
-
-      .star {
-        position: absolute;
+      .sparkle {
+        position: fixed;
         width: 3px;
         height: 3px;
-        background: white;
+        background: var(--ny-gold);
         border-radius: 50%;
-        box-shadow: 0 0 5px white;
-        animation: twinkle 2s infinite ease-in-out;
+        box-shadow: 0 0 10px var(--ny-gold);
+        animation: twinkle 3s infinite ease-in-out;
+        z-index: -1;
       }
 
       .card {
-        background: var(--glass-bg);
+        background: var(--ny-glass);
         width: 100%;
-        max-width: 420px;
+        max-width: 450px; /* Sedikit lebih lebar untuk tabel */
         padding: 2.5rem 2rem;
         border-radius: 16px;
         /* Border Emas Mewah */
-        border: 1px solid var(--ny-gold);
-        box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(212, 175, 55, 0.1);
+        border: 1px solid var(--ny-gold-dark);
+        box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(184, 134, 11, 0.1);
         text-align: center;
-        position: relative;
         backdrop-filter: blur(10px);
-        z-index: 10;
+        position: relative;
       }
 
       /* Dekorasi Pita Tahun Baru */
       .card::before {
-        content: '🎊 2026 🎊';
+        content: '🎉 2026 🎉';
         position: absolute;
         top: -15px;
         left: 50%;
         transform: translateX(-50%);
-        background: linear-gradient(90deg, var(--ny-gold), #f9d976, var(--ny-gold));
-        color: var(--ny-dark);
-        padding: 5px 20px;
+        background: linear-gradient(90deg, var(--ny-gold-dark), var(--ny-gold), var(--ny-gold-dark));
+        color: var(--ny-black);
+        padding: 5px 25px;
         font-weight: 800;
         border-radius: 50px;
         font-size: 0.9rem;
         box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        border: 2px solid #fff;
+        border: 2px solid white;
+        z-index: 10;
       }
 
       img {
-        margin-top: 15px;
-        /* Filter emas pada logo */
-        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+        margin-top: 10px;
+        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
         transition: transform 0.5s ease;
       }
-      
       img:hover {
-        transform: scale(1.1) rotate(10deg);
+        transform: scale(1.1) rotate(5deg);
       }
 
       h1 {
         font-family: 'Cinzel', serif;
-        margin: 20px 0 25px 0;
-        font-size: 2rem;
-        font-weight: 700;
-        /* Teks Emas Gradient */
+        margin: 15px 0 20px 0;
+        font-size: 1.8rem;
         background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
-        text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        letter-spacing: 2px;
-      }
-      
-      h1 span {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 0.8rem;
-        color: var(--ny-gold-light);
-        display: block;
-        margin-top: 8px;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        font-weight: 400;
-        background: none;
-        -webkit-text-fill-color: var(--ny-gold-light);
-      }
-
-      #loadingCheck {
-        color: var(--ny-gold);
-        border: 1px solid var(--ny-gold);
-        padding: 8px 20px;
-        border-radius: 4px;
-        display: inline-block;
-        font-size: 0.8rem;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        font-weight: 700;
         letter-spacing: 1px;
-        text-transform: uppercase;
-        background: rgba(0,0,0,0.3);
       }
 
+      /* Alert Box Dark Theme */
       .alert-box {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        background: rgba(255, 255, 255, 0.05);
         border-left: 3px solid var(--ny-gold);
-        color: var(--ny-gold-light);
+        color: var(--text-gold);
         padding: 15px;
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-        text-align: left;
-        line-height: 1.5;
+        font-size: 0.85rem;
         border-radius: 0 8px 8px 0;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+        text-align: left;
+        border: 1px solid rgba(255,215,0,0.2);
       }
 
       .quota-display {
-        background: rgba(0,0,0,0.4);
-        padding: 20px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .quota-display span {
-        display: block;
-        font-size: 0.8rem;
-        color: #aaa;
-        margin-bottom: 5px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
-
-      .quota-number {
-        display: inline-block;
         font-family: 'Cinzel', serif;
-        font-size: 3.5rem;
+        font-size: 1rem;
+        color: var(--ny-silver);
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 12px;
+        background: rgba(0,0,0,0.3);
+      }
+      
+      .quota-number {
+        display: block;
         color: var(--ny-gold);
+        font-size: 2.5rem;
         font-weight: 700;
-        text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        margin-top: 5px;
       }
 
       input {
@@ -189,20 +163,20 @@
         background-color: rgba(255, 255, 255, 0.05);
         border: 1px solid #444;
         border-radius: 8px;
-        color: white;
         font-size: 1rem;
         font-family: 'Montserrat', sans-serif;
-        margin-bottom: 1.2rem;
+        color: white;
+        margin-bottom: 1rem;
         box-sizing: border-box;
         transition: 0.3s;
-        outline: none;
         text-align: center;
       }
-
+      
       input:focus {
         border-color: var(--ny-gold);
+        outline: none;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
         background-color: rgba(255, 255, 255, 0.1);
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
       }
       
       input::placeholder {
@@ -215,14 +189,14 @@
       button {
         width: 100%;
         padding: 16px;
-        color: var(--ny-dark);
+        color: var(--ny-black);
         border: none;
         border-radius: 8px;
         font-size: 1rem;
         font-family: 'Montserrat', sans-serif;
         font-weight: 800;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: 0.3s;
         text-transform: uppercase;
         letter-spacing: 1px;
       }
@@ -231,13 +205,13 @@
         /* Gradient Emas */
         background: linear-gradient(45deg, #b38728, #fcf6ba, #aa771c);
         background-size: 200% auto;
-        box-shadow: 0 4px 15px rgba(179, 135, 40, 0.4);
+        box-shadow: 0 4px 15px rgba(179, 135, 40, 0.3);
       }
       
       .btn-main:hover {
         background-position: right center;
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(179, 135, 40, 0.6);
+        box-shadow: 0 6px 20px rgba(179, 135, 40, 0.5);
       }
 
       .btn-wl {
@@ -245,10 +219,10 @@
         color: #888;
         border: 1px solid #555;
       }
-
+      
       .btn-wl:hover {
         background: #444;
-        color: white;
+        color: #fff;
       }
 
       button:disabled {
@@ -256,59 +230,125 @@
         color: #555;
         cursor: not-allowed;
         box-shadow: none;
-        transform: none;
       }
 
       #status {
-        margin-top: 1.5rem;
-        font-size: 0.95rem;
+        margin-top: 1rem;
+        font-size: 0.9rem;
         font-weight: 600;
-        letter-spacing: 0.5px;
-      }
-
-      .text-success { color: #4ade80; text-shadow: 0 0 10px rgba(74, 222, 128, 0.3); }
-      .text-error { color: #ff4d4d; text-shadow: 0 0 10px rgba(255, 77, 77, 0.3); }
-      .text-wl { color: #facc15; }
-
-      .hidden {
-        display: none !important;
+        line-height: 1.5;
+        min-height: 20px;
       }
       
-      .footer-note {
-        margin-top: 25px;
-        font-size: 0.7rem;
-        color: #666;
+      .text-error { color: var(--error-glow); text-shadow: 0 0 10px rgba(255,0,85,0.4); }
+      .text-success { color: var(--success-glow); text-shadow: 0 0 10px rgba(0,255,136,0.4); }
+      .text-wl { color: var(--wl-glow); }
+      
+      .hidden { display: none; }
+
+      /* --- STYLE TABEL NEW YEAR --- */
+      .list-container {
+        margin-top: 2rem;
+        border-top: 1px solid rgba(255,215,0,0.3);
+        padding-top: 1.5rem;
+      }
+      
+      h3 {
+        margin: 0 0 1rem 0;
+        font-family: 'Cinzel', serif;
+        font-size: 1.1rem;
+        color: var(--ny-gold);
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
+      }
+
+      .table-scroll {
+        max-height: 250px;
+        overflow-y: auto;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        background: rgba(0,0,0,0.2);
+        
+        /* Custom Scrollbar Dark */
+        scrollbar-width: thin;
+        scrollbar-color: var(--ny-gold-dark) var(--ny-black);
       }
       
-      /* Fireworks decorations */
-      .fw-deco {
-        position: fixed;
-        font-size: 2rem;
-        opacity: 0.2;
-        animation: burst 2s infinite ease-out;
-        z-index: 0;
-        pointer-events: none;
+      .table-scroll::-webkit-scrollbar {
+        width: 8px;
+      }
+      .table-scroll::-webkit-scrollbar-track {
+        background: var(--ny-black);
+      }
+      .table-scroll::-webkit-scrollbar-thumb {
+        background-color: var(--ny-gold-dark);
+        border-radius: 4px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
       }
       
-      @keyframes burst {
-        0% { transform: scale(0.5); opacity: 0; }
-        50% { opacity: 0.4; }
-        100% { transform: scale(1.5); opacity: 0; }
+      th {
+        background: rgba(184, 134, 11, 0.2); /* Dark Gold tint */
+        padding: 12px 10px;
+        text-align: left;
+        font-weight: 700;
+        color: var(--ny-gold);
+        position: sticky;
+        top: 0;
+        border-bottom: 1px solid rgba(255,215,0,0.3);
+        text-transform: uppercase;
+        font-family: 'Cinzel', serif;
+        letter-spacing: 1px;
+        backdrop-filter: blur(5px);
+      }
+      
+      td {
+        padding: 10px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        color: var(--ny-silver);
+      }
+      
+      tr:nth-child(even) {
+        background-color: rgba(255,255,255,0.02);
+      }
+      
+      tr:hover {
+        background-color: rgba(255,215,0,0.05);
+      }
+
+      /* Badge Status Neon */
+      .badge-ok {
+        background: rgba(0, 255, 136, 0.1);
+        color: var(--success-glow);
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        box-shadow: 0 0 5px rgba(0, 255, 136, 0.2);
+      }
+      
+      .badge-wl {
+        background: rgba(255, 204, 0, 0.1);
+        color: var(--wl-glow);
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border: 1px solid rgba(255, 204, 0, 0.3);
       }
     </style>
   </head>
   <body>
-    <!-- Efek Bintang Latar Belakang -->
-    <div class="star" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
-    <div class="star" style="top: 30%; left: 80%; animation-delay: 0.5s;"></div>
-    <div class="star" style="top: 70%; left: 10%; animation-delay: 1s;"></div>
-    <div class="star" style="top: 50%; left: 50%; animation-delay: 1.5s;"></div>
+    <!-- Efek Partikel Background -->
+    <div class="sparkle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+    <div class="sparkle" style="top: 70%; left: 80%; animation-delay: 1s;"></div>
+    <div class="sparkle" style="top: 40%; left: 60%; animation-delay: 2s;"></div>
     
-    <div class="fw-deco" style="top: 15%; left: 15%; color: gold;">💥</div>
-    <div class="fw-deco" style="top: 25%; right: 15%; color: red; animation-delay: 0.8s;">💥</div>
-
     <div class="card">
       <img
         src="img/logo-removebg-preview - Copy.png"
@@ -316,19 +356,22 @@
         style="height: 100px"
         onerror="this.style.display='none'" 
       />
+      <!-- Fallback Icon jika gambar tidak ada -->
+      <div style="text-align:center; margin-bottom:10px;" onerror="this.style.display='block'">
+         <!-- SVG Icon Placeholder bisa disini jika diperlukan -->
+      </div>
       
-      <h1>WAR TIKET<br><span>Edisi Tahun Baru</span></h1>
+      <h1>WAR TIKET<br><span style="font-size: 0.6em; font-family: 'Montserrat', sans-serif; color: #ccc;">SUKA NEPAK</span></h1>
 
-      <div id="loadingCheck">Checking Availability...</div>
+      <div id="loadingCheck">Checking System...</div>
 
       <div id="quotaSection" class="hidden">
         <div class="quota-display">
-          <span>Sisa Slot</span>
-          <div id="slotNumber" class="quota-number">-</div>
+          Sisa Slot
+          <span id="slotNumber" class="quota-number">-</span>
         </div>
         <div class="alert-box">
-          🥂 <b>Perhatian:</b><br>
-          Jika slot habis, Anda akan masuk ke Waiting List prioritas.
+          🥂 <b>INFO:</b> Jika slot habis, Anda otomatis masuk ke Waiting List prioritas.
         </div>
       </div>
 
@@ -336,22 +379,43 @@
         <input
           type="text"
           id="nama"
-          placeholder="Nama Peserta"
+          placeholder="NAMA PESERTA"
           autocomplete="off"
         />
         <button id="btnSubmit" class="btn-main" onclick="submitData()">
-          Amankan Slot 2026
+          AMANKAN SLOT 2026
         </button>
       </div>
 
       <div id="status"></div>
       
-      <div class="footer-note">New Year, New Game! 🏸</div>
+      <div class="list-container">
+        <h3>📋 Daftar Peserta Live</h3>
+        <div class="table-scroll">
+          <table id="tabelPeserta">
+            <thead>
+              <tr>
+                <th style="width: 15%">#</th>
+                <th style="width: 50%">Nama</th>
+                <th style="width: 35%">Status</th>
+              </tr>
+            </thead>
+            <tbody id="tabelBody">
+              <tr>
+                <td colspan="3" style="text-align: center; color: #888; padding: 20px;">
+                  Memuat data...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
     </div>
 
     <script>
       // ================= KONFIGURASI =================
-      const API_BASE_URL = "https://sheetdb.io/api/v1/206hglk100tbu"; // GANTI API ANDA
+      const API_BASE_URL = "https://sheetdb.io/api/v1/doj5lvnlg6hpg"; // GANTI API ANDA
       // ===============================================
 
       // 1. FUNGSI LOGIKA OTOMATIS (AUTO-SCHEDULE)
@@ -362,12 +426,12 @@
         let sesiName = "";
 
         // --- PERBAIKAN LOGIKA HARI DI SINI ---
-        if (day >= 1 && day <= 3) {
+        if (day >= 1 && day <= 4) {
           // Senin(1) s/d Kamis(4) --> Target Kamis
-          const selisih = 3 - day;
+          const selisih = 4 - day;
           targetDate.setDate(now.getDate() + selisih);
           sesiName = "kamis";
-        } else if (day === 4 || day === 6) {
+        } else if (day === 5 || day === 6) {
           // Jumat(5) & Sabtu(6) --> Target Sabtu
           // (Kode lama Anda salah karena tidak ada angka 5)
           const selisih = 6 - day;
@@ -417,8 +481,9 @@
         displayTanggal = auto.dateReadable;
 
         // Opsional: Ubah URL di browser biar user tau (tanpa reload)
-        // DIBUNGKUS TRY-CATCH UNTUK MENGHINDARI ERROR DI BLOB/SANDBOX
         const newUrl = `${window.location.pathname}?sesi=${sesiParam}&kode=${kodeParam}`;
+        
+        // DIBUNGKUS TRY-CATCH UNTUK MENGHINDARI ERROR DI BLOB/SANDBOX
         try {
             window.history.replaceState(null, "", newUrl);
         } catch (e) {
@@ -440,7 +505,7 @@
         targetSheet = "Sabtu";
       } else {
         document.getElementById("formSection").innerHTML =
-          '<p class="text-error">Maaf, sesi tidak ditemukan.</p>';
+          '<p class="text-error">Error: Sesi tidak dikenali.</p>';
         document.getElementById("loadingCheck").style.display = "none";
       }
 
@@ -495,21 +560,24 @@
           );
         } catch (error) {
           console.error(error);
-          document.getElementById("status").innerHTML = '<span class="text-error">Gagal koneksi.</span>';
+          document.getElementById("status").innerHTML = "Gagal koneksi server.";
         }
+        refreshTable(); // <--- Render tabel di awal
       }
 
       function updateButtonState() {
         const btn = document.getElementById("btnSubmit");
         if (currentTotal >= maxQuota) {
           btn.className = "btn-wl";
-          btn.innerText = "Antri Waiting List";
+          btn.innerText = "ANTRI WAITING LIST";
         } else {
           btn.className = "btn-main";
-          btn.innerText = "Amankan Slot 2026";
+          btn.innerText = "AMANKAN SLOT!";
         }
       }
 
+      // Jalankan fungsi refresh table (agar tabel tetap muncul meskipun quota error)
+      refreshTable(); 
       if (maxQuota) init();
 
       // 5. FUNGSI SUBMIT
@@ -519,12 +587,12 @@
         const status = document.getElementById("status");
 
         if (!nama) {
-          alert("Silakan isi nama Anda terlebih dahulu.");
+          alert("Isi nama dulu!");
           return;
         }
 
         btn.disabled = true;
-        btn.innerText = "Memproses...";
+        btn.innerText = "Sedang Menyimpan...";
         status.innerHTML = "";
 
         try {
@@ -547,9 +615,9 @@
           if (realtimeCount >= maxQuota) {
             isWL = true;
             urutanWL = realtimeCount - maxQuota + 1;
-            pesan = `Slot Penuh! Anda masuk <b>Waiting List ke-${urutanWL}</b>.`;
+            pesan = `Yah telat! Masuk <b>Waiting List ke-${urutanWL}</b>.`;
           } else {
-            pesan = `<b>Berhasil!</b> Slot Tahun Baru Diamankan.`;
+            pesan = `<b>BERHASIL!</b> Slot diamankan.`;
           }
 
           const now = new Date();
@@ -597,6 +665,68 @@
             "<span class='text-error'>Error: " + error.message + "</span>";
           btn.disabled = false;
           updateButtonState();
+        }
+        refreshTable(); // <--- Update tabel realtime setelah submit
+      }
+
+      // 6. FUNGSI RENDER TABEL REAL-TIME
+      async function refreshTable() {
+        const tbody = document.getElementById("tabelBody");
+
+        // Jika variabel penting belum siap, jangan jalan dulu
+        if (!targetSheet || !kodeParam) return;
+
+        try {
+          // Anti-cache url
+          const uniq = new Date().getTime();
+          const endpoint = `${API_BASE_URL}?sheet=${targetSheet}&uniq=${uniq}`;
+
+          const response = await fetch(endpoint);
+          const data = await response.json();
+
+          // Filter data sesuai kode sesi URL
+          const targetKode = cleanText(kodeParam);
+          const validData = data.filter(
+            (item) => cleanText(item.Sesi_Kode || item.sesi_kode) === targetKode
+          );
+
+          // Reset isi tabel
+          tbody.innerHTML = "";
+
+          if (validData.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:15px; color:#aaa;">Belum ada peserta. Jadilah yang pertama!</td></tr>`;
+            return;
+          }
+
+          // Loop data untuk ditampilkan
+          validData.forEach((item, index) => {
+            const row = document.createElement("tr");
+            const nomor = index + 1; // Urutan (1, 2, 3...)
+
+            // Logika Status (Masuk vs WL)
+            let statusBadge = "";
+            if (nomor <= maxQuota) {
+              statusBadge = `<span class="badge-ok">✅ MASUK</span>`;
+            } else {
+              const urutanWL = nomor - maxQuota;
+              statusBadge = `<span class="badge-wl">⏳ WL-${urutanWL}</span>`;
+            }
+
+            // Sanitasi Nama (Biar aman dari script jahat)
+            const safeName = item.Nama
+              ? item.Nama.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+              : "Tanpa Nama";
+
+            row.innerHTML = `
+                <td style="font-weight:bold; color:var(--ny-gold);">${nomor}</td>
+                <td>${safeName}</td>
+                <td>${statusBadge}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Gagal load tabel:", error);
+          tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:red;">Gagal memuat tabel.</td></tr>`;
         }
       }
     </script>
