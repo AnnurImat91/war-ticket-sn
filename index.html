@@ -16,30 +16,26 @@
     
     <style>
       :root {
-        /* Palet Warna Tahun Baru */
-        --ny-gold: #FFD700;
-        --ny-gold-dark: #B8860B;
-        --ny-silver: #C0C0C0;
-        --ny-black: #0a0a0a;
-        --ny-night: #1a1a2e;
-        --ny-glass: rgba(20, 20, 35, 0.85);
+        /* Palet Warna New Year */
+        --ny-gold: #d4af37;          /* Metallic Gold */
+        --ny-gold-light: #f7e7ce;    /* Champagne */
+        --ny-dark: #0f172a;          /* Midnight Blue/Black */
+        --ny-black: #000000;
+        --ny-accent: #ff4d4d;        /* Firework Red */
+        --glass-bg: rgba(20, 20, 30, 0.85);
         
-        --text-main: #f3f4f6;
-        --text-gold: #F4E7BE;
-        
-        /* Status Colors (Neon Style) */
-        --success-glow: #00ff88;
-        --error-glow: #ff0055;
-        --wl-glow: #ffcc00;
+        --glow-gold: 0 0 15px rgba(212, 175, 55, 0.5);
       }
 
       body {
         font-family: 'Montserrat', sans-serif;
         background-color: var(--ny-black);
-        /* Background Fireworks Abstract */
+        /* Background Fireworks Gradient sederhana */
         background-image: 
-          radial-gradient(circle at 15% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 25%),
-          radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.1) 0%, transparent 25%);
+          radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 20%),
+          radial-gradient(circle at 80% 10%, rgba(255, 77, 77, 0.15) 0%, transparent 20%),
+          radial-gradient(circle at 50% 80%, rgba(100, 200, 255, 0.1) 0%, transparent 30%);
+        background-attachment: fixed;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -47,114 +43,144 @@
         margin: 0;
         padding: 20px;
         box-sizing: border-box;
-        color: var(--text-main);
+        color: var(--ny-gold-light);
         overflow-x: hidden;
       }
 
-      /* Animasi Partikel Emas */
+      /* Animasi 'Sparkle' Background */
       @keyframes twinkle {
-        0%, 100% { opacity: 0.2; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.5); }
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.2); }
       }
-      .sparkle {
-        position: fixed;
+
+      .star {
+        position: absolute;
         width: 3px;
         height: 3px;
-        background: var(--ny-gold);
+        background: white;
         border-radius: 50%;
-        box-shadow: 0 0 10px var(--ny-gold);
-        animation: twinkle 3s infinite ease-in-out;
-        z-index: -1;
+        box-shadow: 0 0 5px white;
+        animation: twinkle 2s infinite ease-in-out;
       }
 
       .card {
-        background: var(--ny-glass);
+        background: var(--glass-bg);
         width: 100%;
-        max-width: 450px; /* Sedikit lebih lebar untuk tabel */
+        max-width: 420px;
         padding: 2.5rem 2rem;
         border-radius: 16px;
         /* Border Emas Mewah */
-        border: 1px solid var(--ny-gold-dark);
-        box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(184, 134, 11, 0.1);
+        border: 1px solid var(--ny-gold);
+        box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(212, 175, 55, 0.1);
         text-align: center;
-        backdrop-filter: blur(10px);
         position: relative;
+        backdrop-filter: blur(10px);
+        z-index: 10;
       }
 
       /* Dekorasi Pita Tahun Baru */
       .card::before {
-        content: '🎉 2026 🎉';
+        content: '🎊 2026 🎊';
         position: absolute;
         top: -15px;
         left: 50%;
         transform: translateX(-50%);
-        background: linear-gradient(90deg, var(--ny-gold-dark), var(--ny-gold), var(--ny-gold-dark));
-        color: var(--ny-black);
-        padding: 5px 25px;
+        background: linear-gradient(90deg, var(--ny-gold), #f9d976, var(--ny-gold));
+        color: var(--ny-dark);
+        padding: 5px 20px;
         font-weight: 800;
         border-radius: 50px;
         font-size: 0.9rem;
         box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        border: 2px solid white;
-        z-index: 10;
+        border: 2px solid #fff;
       }
 
       img {
-        margin-top: 10px;
-        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
+        margin-top: 15px;
+        /* Filter emas pada logo */
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
         transition: transform 0.5s ease;
       }
+      
       img:hover {
-        transform: scale(1.1) rotate(5deg);
+        transform: scale(1.1) rotate(10deg);
       }
 
       h1 {
         font-family: 'Cinzel', serif;
-        margin: 15px 0 20px 0;
-        font-size: 1.8rem;
+        margin: 20px 0 25px 0;
+        font-size: 2rem;
+        font-weight: 700;
+        /* Teks Emas Gradient */
         background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        font-weight: 700;
-        letter-spacing: 1px;
+        text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        letter-spacing: 2px;
+      }
+      
+      h1 span {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.8rem;
+        color: var(--ny-gold-light);
+        display: block;
+        margin-top: 8px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        font-weight: 400;
+        background: none;
+        -webkit-text-fill-color: var(--ny-gold-light);
       }
 
-      /* Alert Box Dark Theme */
+      #loadingCheck {
+        color: var(--ny-gold);
+        border: 1px solid var(--ny-gold);
+        padding: 8px 20px;
+        border-radius: 4px;
+        display: inline-block;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: rgba(0,0,0,0.3);
+      }
+
       .alert-box {
-        background: rgba(255, 255, 255, 0.05);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
         border-left: 3px solid var(--ny-gold);
-        color: var(--text-gold);
+        color: var(--ny-gold-light);
         padding: 15px;
-        font-size: 0.85rem;
-        border-radius: 0 8px 8px 0;
+        font-size: 0.9rem;
         margin-bottom: 1.5rem;
-        line-height: 1.5;
         text-align: left;
-        border: 1px solid rgba(255,215,0,0.2);
+        line-height: 1.5;
+        border-radius: 0 8px 8px 0;
       }
 
       .quota-display {
-        font-family: 'Cinzel', serif;
-        font-size: 1rem;
-        color: var(--ny-silver);
-        margin-bottom: 15px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 15px;
+        background: rgba(0,0,0,0.4);
+        padding: 20px;
         border-radius: 12px;
-        background: rgba(0,0,0,0.3);
+        margin-bottom: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
-      
-      .quota-number {
+
+      .quota-display span {
         display: block;
+        font-size: 0.8rem;
+        color: #aaa;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .quota-number {
+        display: inline-block;
+        font-family: 'Cinzel', serif;
+        font-size: 3.5rem;
         color: var(--ny-gold);
-        font-size: 2.5rem;
         font-weight: 700;
-        text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-        margin-top: 5px;
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
       }
 
       input {
@@ -163,20 +189,20 @@
         background-color: rgba(255, 255, 255, 0.05);
         border: 1px solid #444;
         border-radius: 8px;
+        color: white;
         font-size: 1rem;
         font-family: 'Montserrat', sans-serif;
-        color: white;
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
         box-sizing: border-box;
         transition: 0.3s;
+        outline: none;
         text-align: center;
       }
-      
+
       input:focus {
         border-color: var(--ny-gold);
-        outline: none;
-        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
         background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
       }
       
       input::placeholder {
@@ -189,14 +215,14 @@
       button {
         width: 100%;
         padding: 16px;
-        color: var(--ny-black);
+        color: var(--ny-dark);
         border: none;
         border-radius: 8px;
         font-size: 1rem;
         font-family: 'Montserrat', sans-serif;
         font-weight: 800;
         cursor: pointer;
-        transition: 0.3s;
+        transition: all 0.3s ease;
         text-transform: uppercase;
         letter-spacing: 1px;
       }
@@ -205,13 +231,13 @@
         /* Gradient Emas */
         background: linear-gradient(45deg, #b38728, #fcf6ba, #aa771c);
         background-size: 200% auto;
-        box-shadow: 0 4px 15px rgba(179, 135, 40, 0.3);
+        box-shadow: 0 4px 15px rgba(179, 135, 40, 0.4);
       }
       
       .btn-main:hover {
         background-position: right center;
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(179, 135, 40, 0.5);
+        box-shadow: 0 6px 20px rgba(179, 135, 40, 0.6);
       }
 
       .btn-wl {
@@ -219,10 +245,10 @@
         color: #888;
         border: 1px solid #555;
       }
-      
+
       .btn-wl:hover {
         background: #444;
-        color: #fff;
+        color: white;
       }
 
       button:disabled {
@@ -230,21 +256,47 @@
         color: #555;
         cursor: not-allowed;
         box-shadow: none;
+        transform: none;
       }
 
       #status {
-        margin-top: 1rem;
-        font-size: 0.9rem;
+        margin-top: 1.5rem;
+        font-size: 0.95rem;
         font-weight: 600;
-        line-height: 1.5;
-        min-height: 20px;
+        letter-spacing: 0.5px;
+      }
+
+      .text-success { color: #4ade80; text-shadow: 0 0 10px rgba(74, 222, 128, 0.3); }
+      .text-error { color: #ff4d4d; text-shadow: 0 0 10px rgba(255, 77, 77, 0.3); }
+      .text-wl { color: #facc15; }
+
+      .hidden {
+        display: none !important;
       }
       
-      .text-error { color: var(--error-glow); text-shadow: 0 0 10px rgba(255,0,85,0.4); }
-      .text-success { color: var(--success-glow); text-shadow: 0 0 10px rgba(0,255,136,0.4); }
-      .text-wl { color: var(--wl-glow); }
+      .footer-note {
+        margin-top: 25px;
+        font-size: 0.7rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
       
-      .hidden { display: none; }
+      /* Fireworks decorations */
+      .fw-deco {
+        position: fixed;
+        font-size: 2rem;
+        opacity: 0.2;
+        animation: burst 2s infinite ease-out;
+        z-index: 0;
+        pointer-events: none;
+      }
+      
+      @keyframes burst {
+        0% { transform: scale(0.5); opacity: 0; }
+        50% { opacity: 0.4; }
+        100% { transform: scale(1.5); opacity: 0; }
+      }
 
       /* --- STYLE TABEL NEW YEAR --- */
       .list-container {
@@ -345,10 +397,14 @@
   </head>
   <body>
     <!-- Efek Partikel Background -->
-    <div class="sparkle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
-    <div class="sparkle" style="top: 70%; left: 80%; animation-delay: 1s;"></div>
-    <div class="sparkle" style="top: 40%; left: 60%; animation-delay: 2s;"></div>
+    <div class="star" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+    <div class="star" style="top: 30%; left: 80%; animation-delay: 0.5s;"></div>
+    <div class="star" style="top: 70%; left: 10%; animation-delay: 1s;"></div>
+    <div class="star" style="top: 50%; left: 50%; animation-delay: 1.5s;"></div>
     
+    <div class="fw-deco" style="top: 15%; left: 15%; color: gold;">💥</div>
+    <div class="fw-deco" style="top: 25%; right: 15%; color: red; animation-delay: 0.8s;">💥</div>
+
     <div class="card">
       <img
         src="img/logo-removebg-preview - Copy.png"
@@ -356,22 +412,19 @@
         style="height: 100px"
         onerror="this.style.display='none'" 
       />
-      <!-- Fallback Icon jika gambar tidak ada -->
-      <div style="text-align:center; margin-bottom:10px;" onerror="this.style.display='block'">
-         <!-- SVG Icon Placeholder bisa disini jika diperlukan -->
-      </div>
       
-      <h1>WAR TIKET<br><span style="font-size: 0.6em; font-family: 'Montserrat', sans-serif; color: #ccc;">SUKA NEPAK</span></h1>
+      <h1>WAR TIKET<br><span>Edisi Tahun Baru</span></h1>
 
-      <div id="loadingCheck">Checking System...</div>
+      <div id="loadingCheck">Checking Availability...</div>
 
       <div id="quotaSection" class="hidden">
         <div class="quota-display">
-          Sisa Slot
-          <span id="slotNumber" class="quota-number">-</span>
+          <span>Sisa Slot</span>
+          <div id="slotNumber" class="quota-number">-</div>
         </div>
         <div class="alert-box">
-          🥂 <b>INFO:</b> Jika slot habis, Anda otomatis masuk ke Waiting List prioritas.
+          🥂 <b>Perhatian:</b><br>
+          Jika slot habis, Anda akan masuk ke Waiting List prioritas.
         </div>
       </div>
 
@@ -379,11 +432,11 @@
         <input
           type="text"
           id="nama"
-          placeholder="NAMA PESERTA"
+          placeholder="Nama Peserta"
           autocomplete="off"
         />
         <button id="btnSubmit" class="btn-main" onclick="submitData()">
-          AMANKAN SLOT 2026
+          Amankan Slot 2026
         </button>
       </div>
 
@@ -732,3 +785,4 @@
     </script>
   </body>
 </html>
+
